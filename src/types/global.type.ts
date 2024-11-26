@@ -25,11 +25,8 @@ export type TResponse<T> = {
   message: string;
 };
 export type TResponseRedux<T> = TResponse<T> & BaseQueryApi;
-export type TGenericResponse = {
+
+export type TQueryParam = {
   name: string;
-  code: string;
-  year: string;
-  startMonth: string;
-  endMonth: string;
-  _id: string;
+  value: boolean | React.Key;
 };
