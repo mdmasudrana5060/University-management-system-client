@@ -1,0 +1,35 @@
+import { BaseQueryApi } from "@reduxjs/toolkit/query";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export type TError = {
+  data: {
+    message: string;
+    stack: string;
+    success: boolean;
+  };
+  status: number;
+};
+
+export type TMeta = {
+  limit: number;
+  page: number;
+  total: number;
+  totalNumber: number;
+};
+
+export type TResponse<T> = {
+  data?: T;
+  error?: TError;
+  meta?: TMeta;
+  success: boolean;
+  message: string;
+};
+export type TResponseRedux<T> = TResponse<T> & BaseQueryApi;
+export type TGenericResponse = {
+  name: string;
+  code: string;
+  year: string;
+  startMonth: string;
+  endMonth: string;
+  _id: string;
+};
