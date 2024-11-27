@@ -1,8 +1,11 @@
 export type TAcademicSemester = {
+  _id: string;
   name: string;
-  code: string;
   year: string;
+  code: string;
   startMonth: string;
   endMonth: string;
-  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 };
