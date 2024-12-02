@@ -1,13 +1,14 @@
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
 import PhForm from "../../../components/form/PhForm";
 import PhInput from "../../../components/form/PhInput";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Divider, Form, Input, Row } from "antd";
 import PhDatePicker from "../../../components/form/PhDatePicker";
 import {
   useGetAllDepartmentQuery,
   useGetAllSemesterQuery,
 } from "../../../redux/features/admin/academicManagement.api";
 import PhSelect from "../../../components/form/PhSelect";
+import { bloodGroupOptions, genderOptions } from "../../../constants/global";
 import { useAddStudentMutation } from "../../../redux/features/admin/useManagement.api";
 
 //  {
@@ -47,17 +48,17 @@ import { useAddStudentMutation } from "../../../redux/features/admin/useManageme
 // " academicFaculty":"6739b9e9733a808ea1957b05"
 // }
 // }
-const studentDefaultData = {
+const studentDefaultValues = {
   password: "123456789",
   student: {
     name: {
-      firstName: "Masud",
+      firstName: "Honey",
       middleName: "B.",
-      lastName: "Rana",
+      lastName: "Singh",
     },
     gender: "male",
-    dateOfBirth: "1995-04-15",
-    email: "student4@gmail.com",
+
+    email: "honey@gmail.com",
     contactNo: "555123456",
     emergencyContactNo: "555987654",
     bloodGroup: "AB+",
@@ -109,164 +110,159 @@ const CreateStudent = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
-
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
+    formData.append("file", data.image);
+    console.log(Object.fromEntries(formData));
     addStudent(formData);
   };
   return (
-    <Row>
+    <Row justify="center">
       <Col span={24}>
-        <PhForm onSubmit={onSubmit} defaultValues={studentDefaultData}>
-          <Divider>Personal Info</Divider>
+        <PhForm onSubmit={onSubmit} defaultValues={studentDefaultValues}>
+          <Divider>Personal Info.</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="name.firstName"
-                label="First Name"
-              ></PhInput>
+              <PhInput type="text" name="name.firstName" label="First Name" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="name.middleName"
-                label="Middle Name"
-              ></PhInput>
+              <PhInput type="text" name="name.middleName" label="Middle Name" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="name.lastName"
-                label="Last Name"
-              ></PhInput>
+              <PhInput type="text" name="name.lastName" label="Last Name" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PhInput type="text" name="gender" label="Gender"></PhInput>
+              <PhSelect options={genderOptions} name="gender" label="Gender" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PhDatePicker
-                name="dataOfBirth"
-                label="Date of Birth"
-              ></PhDatePicker>
+              <PhDatePicker name="dateOfBirth" label="Date of birth" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PhInput
-                type="text"
+              <PhSelect
+                options={bloodGroupOptions}
                 name="bloodGroup"
-                label="Blood Group"
-              ></PhInput>
+                label="Blood group"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <Controller
+                name="image"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Form.Item label="Picture">
+                    <Input
+                      type="file"
+                      value={value?.fileName}
+                      {...field}
+                      onChange={(e) => onChange(e.target.files?.[0])}
+                    />
+                  </Form.Item>
+                )}
+              />
             </Col>
           </Row>
-          <Divider>Contact info</Divider>
+          <Divider>Contact Info.</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PhInput type="text" name="email" label="Email"></PhInput>
+              <PhInput type="text" name="email" label="Email" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PhInput type="text" name="contactNo" label="Contact"></PhInput>
+              <PhInput type="text" name="contactNo" label="Contact" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
                 name="emergencyContactNo"
                 label="Emergency Contact"
-              ></PhInput>
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
                 name="presentAddress"
                 label="Present Address"
-              ></PhInput>
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
                 name="permanentAddress"
-                label="Permanent Addres"
-              ></PhInput>
+                label="Permanent Address"
+              />
             </Col>
           </Row>
-
           <Divider>Guardian</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
-                name="fatherName"
+                name="guardian.fatherName"
                 label="Father Name"
-              ></PhInput>
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
-                name="fatherOccupation"
+                name="guardian.fatherOccupation"
                 label="Father Occupation"
-              ></PhInput>
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
-                name="fatherContactNo"
-                label="Fther Contact No"
-              ></PhInput>
+                name="guardian.fatherContactNo"
+                label="Father ContactNo"
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
-                name="motherName"
+                name="guardian.motherName"
                 label="Mother Name"
-              ></PhInput>
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
-                name="motherOccupation"
+                name="guardian.motherOccupation"
                 label="Mother Occupation"
-              ></PhInput>
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
-                name="motherContactNo"
-                label="Mother Contact No"
-              ></PhInput>
+                name="guardian.motherContactNo"
+                label="Mother ContactNo"
+              />
             </Col>
           </Row>
           <Divider>Local Guardian</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="localGuardian.name"
-                label="Name"
-              ></PhInput>
+              <PhInput type="text" name="localGuardian.name" label="Name" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
                 name="localGuardian.occupation"
                 label="Occupation"
-              ></PhInput>
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
                 name="localGuardian.contactNo"
-                label="Contact"
-              ></PhInput>
+                label="Contact No."
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhInput
                 type="text"
                 name="localGuardian.address"
                 label="Address"
-              ></PhInput>
+              />
             </Col>
           </Row>
-
-          <Divider>Academic Info</Divider>
+          <Divider>Academic Info.</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhSelect
@@ -274,15 +270,15 @@ const CreateStudent = () => {
                 disabled={sIsLoading}
                 name="admissionSemester"
                 label="Admission Semester"
-              ></PhSelect>
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PhSelect
                 options={departmentOption}
                 disabled={dIsLoading}
                 name="academicDepartment"
-                label="Academic Department"
-              ></PhSelect>
+                label="Admission Department"
+              />
             </Col>
           </Row>
 

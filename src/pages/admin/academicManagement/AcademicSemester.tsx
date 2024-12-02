@@ -18,7 +18,7 @@ const AcademicSemester = () => {
   console.log(semesterData);
   const tableData = semesterData?.data?.map(
     ({ _id, name, year, startMonth, endMonth }) => ({
-      _id,
+      key: _id,
       name,
       year,
       startMonth,
